@@ -1,0 +1,11 @@
+{
+    "id": "click-hint",
+    "name": "Click Hint",
+    "version": "1.0.0",
+    "minAppVersion": "0.15.0",
+    "description": "Provide keyboard-driven hints for clickable elements",
+    "author": "kbwo",
+    "authorUrl": "https://github.com/kbwo",
+    "fundingUrl": "",
+    "isDesktopOnly": false
+}
