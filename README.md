@@ -2,7 +2,7 @@
 
 A plugin for [Obsidian](https://obsidian.md) that enhances navigation by providing keyboard-driven hints for clickable elements.
 
-![Screencast from 2024-11-03 00-50-53](https://github.com/user-attachments/assets/231e9ea3-8133-4e1d-b14b-1d4ce2020d3f)
+![Screencast from 2024-11-03 00-50-53 (1)](https://github.com/user-attachments/assets/e586820d-4880-4b0a-8540-9ae3e81c5de5)
 
 Inspired by:
 - easymotion/vim-easymotion: Vim motions on speed! https://github.com/easymotion/vim-easymotion
