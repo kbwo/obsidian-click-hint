@@ -112,7 +112,6 @@ export default class ClickHintPlugin extends Plugin {
         document.addEventListener('keydown', keydownHandler, true);
     }
 
-    // TODO support source mode
     private dispatchElementAction(element: HTMLElement) {
         // The anchor tag for internal links has the href set to #
         if (element.tagName === 'A' && element.parentElement?.className.contains('internal-link')) {
