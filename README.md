@@ -42,7 +42,7 @@ You can customize the following settings:
 ### Manual Installation
 
 1. Download the latest release from the releases page
-2. Extract the files to your `.obsidian/plugins/link-hint/` folder
+2. Extract the files to your `.obsidian/plugins/click-hint/` folder
 3. Reload Obsidian
 4. Enable the plugin in Community Plugins settings
 
