@@ -1,7 +1,7 @@
 {
     "id": "click-hint",
     "name": "Click Hint",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "minAppVersion": "0.15.0",
     "description": "Provide keyboard-driven hints for clickable elements",
     "author": "kbwo",
