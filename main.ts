@@ -122,7 +122,7 @@ export default class ClickHintPlugin extends Plugin {
             }
             return;
         } else if (element.tagName === 'A') {
-            // external link?
+            // may be external link
             const anchor = element as HTMLAnchorElement;
             window.open(anchor.innerText, '_blank');
         }
