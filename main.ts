@@ -46,16 +46,16 @@ export default class ClickHintPlugin extends Plugin {
         );
 
         const hints = this.generateUniquePrefixes(clickableElements.length);
+        const containerEl = document.querySelector('.app-container');
+        if (!containerEl) return;
         clickableElements.forEach((element, index) => {
             const hint = hints[index];
-            const marker = document.createElement('div');
-            marker.addClass('click-hint-marker');
-            marker.setText(hint);
+            const marker = containerEl.createEl('div', { cls: 'click-hint-marker', text: hint });
 
             // Position the hint near the element
             const rect = (element as HTMLElement).getBoundingClientRect();
-            marker.style.left = `${rect.left}px`;
-            marker.style.top = `${rect.top}px`;
+            marker.style.setProperty('--hint-left', `${rect.left}px`);
+            marker.style.setProperty('--hint-top', `${rect.top}px`);
 
             document.body.appendChild(marker);
             this.hintElements[hint] = element as HTMLElement;
@@ -99,7 +99,12 @@ export default class ClickHintPlugin extends Plugin {
                 const hintText = marker.textContent || '';
                 if (hintText.startsWith(currentInput)) {
                     // emphasize the matched part
-                    marker.innerHTML = `<span class="click-hint-matched">${currentInput}</span>${hintText.slice(currentInput.length)}`;
+                    const matchedSpan = marker.createEl('span', { cls: 'click-hint-matched', text: currentInput });
+                    marker.setText(hintText.slice(currentInput.length));
+                    marker.insertBefore(matchedSpan, marker.firstChild);
+                } else {
+                    // remove unmatched marker
+                    marker.remove();
                 }
             });
         };
