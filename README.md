@@ -13,7 +13,6 @@ Inspired by:
 
 - Quick keyboard navigation to any clickable element (links, buttons, etc.)
 - Customizable hint characters
-- Configurable hint appearance (background and foreground colors)
 - Support for both internal and external links
 - Visual feedback for partial matches
 - Efficient hint generation algorithm
