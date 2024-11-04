@@ -43,7 +43,21 @@ export default class ClickHintPlugin extends Plugin {
             document.querySelectorAll(
                 'a, button, [role="button"], [draggable="true"], [class$="item-self"], .clickable-icon, .is-clickable',
             ),
-        );
+        ).filter(element => {
+            const rect = (element as HTMLElement).getBoundingClientRect();
+            const isVisible = !!(
+                element.getClientRects().length &&
+                window.getComputedStyle(element as HTMLElement).visibility !== 'hidden' &&
+                rect.width > 0 &&
+                rect.height > 0
+            );
+            const isInViewport =
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+            return isVisible && isInViewport;
+        });
 
         const hints = this.generateUniquePrefixes(clickableElements.length);
         const containerEl = document.querySelector('.app-container');
@@ -142,41 +156,29 @@ export default class ClickHintPlugin extends Plugin {
             throw new Error('n must be a positive integer.');
         }
 
-        // Maximum n we can handle with the given constraints
-        const maxN = 26 + 25 * 26;
-        if (n > maxN) {
-            throw new Error('Cannot generate unique prefixes with the given n. Maximum allowed is 676.');
+        let length = 1;
+        let possible = letters.length;
+        while (possible < n) {
+            length++;
+            possible += Math.pow(letters.length, length);
         }
 
-        if (n <= 26) {
-            return letters.slice(0, n);
-        }
+        const result: string[] = [];
+        const generateCombinations = (prefix: string, depth: number) => {
+            if (result.length >= n) return;
 
-        const e = Math.ceil((n - 26) / 25);
-
-        if (e > 26) {
-            throw new Error('Cannot generate unique prefixes with the given n.');
-        }
-
-        const singleLetters = letters.slice(e);
-        const prefixes = letters.slice(0, e);
-
-        const longerStringsNeeded = n - (26 - e);
-        const longerStrings: string[] = [];
-
-        for (let i = 0; i < prefixes.length; i++) {
-            for (let j = 0; j < letters.length; j++) {
-                longerStrings.push(prefixes[i] + letters[j]);
-                if (longerStrings.length === longerStringsNeeded) {
-                    break;
-                }
+            if (depth === 0) {
+                result.push(prefix);
+                return;
             }
-            if (longerStrings.length === longerStringsNeeded) {
-                break;
-            }
-        }
 
-        return singleLetters.concat(longerStrings);
+            for (const letter of letters) {
+                generateCombinations(prefix + letter, depth - 1);
+            }
+        };
+
+        generateCombinations('', length);
+        return result.slice(0, n);
     }
 }
 
