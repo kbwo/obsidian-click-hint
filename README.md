@@ -2,7 +2,7 @@
 
 A plugin for [Obsidian](https://obsidian.md) that enhances navigation by providing keyboard-driven hints for clickable elements.
 
-![Screencast from 2024-11-03 00-50-53 (1)](https://github.com/user-attachments/assets/e586820d-4880-4b0a-8540-9ae3e81c5de5)
+[![Image from Gyazo](https://i.gyazo.com/2775763bf630463e268ba20714660786.gif)](https://gyazo.com/2775763bf630463e268ba20714660786)
 
 Inspired by:
 - easymotion/vim-easymotion: Vim motions on speed! https://github.com/easymotion/vim-easymotion
@@ -30,8 +30,6 @@ Inspired by:
 You can customize the following settings:
 
 - **Hint Characters**: Define which characters to use for hints (default: a-z)
-- **Background Color**: Set the background color of hint markers
-- **Foreground Color**: Set the text color for matched characters in hints
 
 ## Installation
 
