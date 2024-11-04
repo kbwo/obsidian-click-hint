@@ -6,3 +6,17 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+.click-hint-marker {
+    position: fixed;
+    background-color: yellow;
+    color: black;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.click-hint-matched {
+    color: #ff6b6b;
+}

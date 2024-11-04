@@ -2,14 +2,10 @@ import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 interface ClickHintSettings {
     hintChars: string;
-    bgColor: string;
-    fgColor: string;
 }
 
 const DEFAULT_SETTINGS: ClickHintSettings = {
     hintChars: 'abcdefghijklmnopqrstuvwxyz',
-    bgColor: 'yellow',
-    fgColor: '#ff6b6b',
 };
 
 export default class ClickHintPlugin extends Plugin {
@@ -27,8 +23,6 @@ export default class ClickHintPlugin extends Plugin {
             hotkeys: [],
             callback: () => this.showHints(),
         });
-
-        this.registerStyles();
     }
 
     onunload() {}
@@ -39,27 +33,6 @@ export default class ClickHintPlugin extends Plugin {
 
     async saveSettings() {
         await this.saveData(this.settings);
-    }
-
-    private registerStyles() {
-        const style = document.createElement('style');
-        style.textContent = `
-            .hint-marker {
-                position: fixed;
-                background-color: ${this.settings.bgColor};
-                color: black;
-                padding: 2px 6px;
-                border-radius: 4px;
-                font-weight: bold;
-                font-size: 12px;
-                z-index: 1000;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            }
-            .hint-matched {
-                color: ${this.settings.fgColor};
-            }
-        `;
-        document.head.appendChild(style);
     }
 
     private showHints() {
@@ -76,7 +49,7 @@ export default class ClickHintPlugin extends Plugin {
         clickableElements.forEach((element, index) => {
             const hint = hints[index];
             const marker = document.createElement('div');
-            marker.addClass('hint-marker');
+            marker.addClass('click-hint-marker');
             marker.setText(hint);
 
             // Position the hint near the element
@@ -122,11 +95,11 @@ export default class ClickHintPlugin extends Plugin {
             }
 
             // Update hint markers' appearance
-            document.querySelectorAll('.hint-marker').forEach((marker: HTMLElement) => {
+            document.querySelectorAll('.click-hint-marker').forEach((marker: HTMLElement) => {
                 const hintText = marker.textContent || '';
                 if (hintText.startsWith(currentInput)) {
                     // emphasize the matched part
-                    marker.innerHTML = `<span class="hint-matched">${currentInput}</span>${hintText.slice(currentInput.length)}`;
+                    marker.innerHTML = `<span class="click-hint-matched">${currentInput}</span>${hintText.slice(currentInput.length)}`;
                 }
             });
         };
@@ -154,12 +127,12 @@ export default class ClickHintPlugin extends Plugin {
 
     private removeHints() {
         this.hintMode = false;
-        document.querySelectorAll('.hint-marker').forEach(el => el.remove());
+        document.querySelectorAll('.click-hint-marker').forEach(el => el.remove());
         this.hintElements = {};
     }
 
     private generateUniquePrefixes(n: number): string[] {
-        const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+        const letters = this.settings.hintChars.split('');
 
         if (n <= 0) {
             throw new Error('n must be a positive integer.');
@@ -227,26 +200,6 @@ class ClickHintSettingTab extends PluginSettingTab {
                         this.plugin.settings.hintChars = value;
                         await this.plugin.saveSettings();
                     }),
-            );
-
-        new Setting(containerEl)
-            .setName('Hint background color')
-            .setDesc('The background color of the hint markers')
-            .addText(text =>
-                text.setValue(this.plugin.settings.bgColor).onChange(async value => {
-                    this.plugin.settings.bgColor = value;
-                    await this.plugin.saveSettings();
-                }),
-            );
-
-        new Setting(containerEl)
-            .setName('Hint foreground color')
-            .setDesc('The foreground color of the hint markers')
-            .addText(text =>
-                text.setValue(this.plugin.settings.fgColor).onChange(async value => {
-                    this.plugin.settings.fgColor = value;
-                    await this.plugin.saveSettings();
-                }),
             );
     }
 }
