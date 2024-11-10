@@ -8,6 +8,16 @@ const DEFAULT_SETTINGS: ClickHintSettings = {
     hintChars: 'abcdefghijklmnopqrstuvwxyz',
 };
 
+const CLICKABLE_ELEMENTS = [
+    'a',
+    'button',
+    '[role="button"]',
+    '[draggable="true"]',
+    '.clickable-icon',
+    '.is-clickable',
+    '.cm-hashtag',
+];
+
 export default class ClickHintPlugin extends Plugin {
     settings: ClickHintSettings;
     hintMode = false;
@@ -39,25 +49,23 @@ export default class ClickHintPlugin extends Plugin {
         if (this.hintMode) return;
         this.hintMode = true;
 
-        const clickableElements = Array.from(
-            document.querySelectorAll(
-                'a, button, [role="button"], [draggable="true"], [class$="item-self"], .clickable-icon, .is-clickable',
-            ),
-        ).filter(element => {
-            const rect = (element as HTMLElement).getBoundingClientRect();
-            const isVisible = !!(
-                element.getClientRects().length &&
-                window.getComputedStyle(element as HTMLElement).visibility !== 'hidden' &&
-                rect.width > 0 &&
-                rect.height > 0
-            );
-            const isInViewport =
-                rect.top >= 0 &&
-                rect.left >= 0 &&
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                rect.right <= (window.innerWidth || document.documentElement.clientWidth);
-            return isVisible && isInViewport;
-        });
+        const clickableElements = Array.from(document.querySelectorAll(CLICKABLE_ELEMENTS.join(', '))).filter(
+            element => {
+                const rect = (element as HTMLElement).getBoundingClientRect();
+                const isVisible = !!(
+                    element.getClientRects().length &&
+                    window.getComputedStyle(element as HTMLElement).visibility !== 'hidden' &&
+                    rect.width > 0 &&
+                    rect.height > 0
+                );
+                const isInViewport =
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+                return isVisible && isInViewport;
+            },
+        );
 
         const hints = this.generateUniquePrefixes(clickableElements.length);
         const containerEl = document.querySelector('.app-container');
