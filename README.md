@@ -15,7 +15,6 @@ Inspired by:
 - Customizable hint characters
 - Support for both internal and external links
 - Visual feedback for partial matches
-- Efficient hint generation algorithm
 
 ## How to Use
 
