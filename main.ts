@@ -164,29 +164,30 @@ export default class ClickHintPlugin extends Plugin {
             throw new Error('n must be a positive integer.');
         }
 
+        const result: string[] = [];
         let length = 1;
-        let possible = letters.length;
-        while (possible < n) {
+        
+        // Generate all combinations of increasing length until we have enough
+        while (result.length < n) {
+            const generateCombinations = (prefix: string, depth: number) => {
+                if (result.length >= n) return;
+
+                if (depth === 0) {
+                    result.push(prefix);
+                    return;
+                }
+
+                for (const letter of letters) {
+                    generateCombinations(prefix + letter, depth - 1);
+                    if (result.length >= n) return;
+                }
+            };
+
+            generateCombinations('', length);
             length++;
-            possible += Math.pow(letters.length, length);
         }
 
-        const result: string[] = [];
-        const generateCombinations = (prefix: string, depth: number) => {
-            if (result.length >= n) return;
-
-            if (depth === 0) {
-                result.push(prefix);
-                return;
-            }
-
-            for (const letter of letters) {
-                generateCombinations(prefix + letter, depth - 1);
-            }
-        };
-
-        generateCombinations('', length);
-        return result.slice(0, n);
+        return result;
     }
 }
 
