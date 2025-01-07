@@ -206,7 +206,7 @@ class ClickHintSettingTab extends PluginSettingTab {
 
         new Setting(containerEl)
             .setName('Hint characters')
-            .setDesc('The characters to use as hints. Default: abcdefghijklmnopqrstuvwxyz')
+            .setDesc('The characters to use as hints. Default: abcdefghijklmnopqrstuvwxyz\nNote: Fewer characters will result in longer hint combinations.')
             .addText(text =>
                 text
                     .setPlaceholder('abcdefghijklmnopqrstuvwxyz')
